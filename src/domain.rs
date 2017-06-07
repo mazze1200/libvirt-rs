@@ -290,6 +290,25 @@ impl VirDomain {
         }
     }
 
+    pub fn attach_device(self, xml: &str) -> Result<(), VirError> {
+        unsafe{
+            let c_s = CString::new(xml).unwrap();
+            match virt::virDomainAttachDevice(self.ptr, c_s.as_ptr()) != -1 {
+                true => Ok(()),
+                false => Err(VirError::new())
+            }
+        }
+    }
+
+    pub fn detach_device(self, xml: &str) -> Result<(), VirError> {
+        unsafe{
+            let c_s = CString::new(xml).unwrap();
+            match virt::virDomainDetachDevice(self.ptr, c_s.as_ptr()) != -1 {
+                true => Ok(()),
+                false => Err(VirError::new())
+            }
+        }
+    }
 }
 
 impl VirDomainInfo {
